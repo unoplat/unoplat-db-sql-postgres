@@ -12,12 +12,11 @@ metadata:
 spec:
   dockerImage: ghcr.io/zalando/spilo-15:3.0-p1
   teamId: "unoplat-sql"
-  numberOfInstances: 2
-  users:  # Application/Robot users
-    zalando:
-    - superuser
-    - createdb
-    foo_user: []
+  numberOfInstances: 1
+  users:
+    health_user:
+      - createdb
+      - createrole
 #    flyway: []
 #  usersWithSecretRotation:
 #  - foo_user
@@ -33,18 +32,15 @@ spec:
   allowedSourceRanges:  # load balancers' source ranges for both master and replica services
   - 127.0.0.1/32
   databases:
-    foo: zalando
+    demo_data: health_user  # 'baz' database owned by 'user_for_data'
   preparedDatabases:
-    bar:
-      defaultUsers: true
+    demo_data:
+      defaultUsers: false
       extensions:
         pg_partman: public
-        pgcrypto: public
+        pgcrypto: public      
       schemas:
         data: {}
-        history:
-          defaultRoles: true
-          defaultUsers: false
   postgresql:
     version: "15"
     parameters:  # Expert section
@@ -94,8 +90,8 @@ spec:
 #  spiloRunAsUser: 101
 #  spiloRunAsGroup: 103
 #  spiloFSGroup: 103
-#  podAnnotations:
-#    annotation.key: value
+  podAnnotations:
+    linkerd.io/inject: enabled
 #  serviceAnnotations:
 #    annotation.key: value
 #  podPriorityClassName: "spilo-pod-priority"
