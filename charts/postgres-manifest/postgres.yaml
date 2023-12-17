@@ -11,10 +11,11 @@ metadata:
 #    "delete-clustername": "acid-test-cluster"  # can only be deleted when name matches if "delete-clustername" key is configured
 spec:
   dockerImage: ghcr.io/zalando/spilo-15:3.0-p1
-  teamId: "unoplat-sql"
+  teamId: "unoplat-harbor"
   numberOfInstances: 1
   users:
-    health_user:
+    harbor_user:
+      - superuser
       - createdb
       - createrole
 #    flyway: []
@@ -31,10 +32,8 @@ spec:
   enableReplicaPoolerLoadBalancer: false
   allowedSourceRanges:  # load balancers' source ranges for both master and replica services
   - 127.0.0.1/32
-  databases:
-    demo_data: health_user  # 'baz' database owned by 'user_for_data'
   preparedDatabases:
-    demo_data:
+    unoplat_registry:
       defaultUsers: false
       extensions:
         pg_partman: public
@@ -52,7 +51,7 @@ spec:
 #    value: my-custom-bucket
 
   volume:
-    size: 1Gi
+    size: 5Gi
 #    storageClass: my-sc
 #    iops: 1000  # for EBS gp3
 #    throughput: 250  # in MB/s for EBS gp3
