@@ -26,6 +26,7 @@
 - Linkerd Integration with Postgres Operator
 - Linkerd Integration with with Postgres UI.
 - Linkerd Integration with with Postgres CRD.
+- Observability Enabled through Grafana Dashboard present in observability folder.
 - DevSecOps:
   - Helm Chart Vulnerability Analysis
   - Automatic Release changelog.
