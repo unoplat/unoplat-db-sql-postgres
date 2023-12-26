@@ -91,6 +91,7 @@ spec:
 #  spiloFSGroup: 103
   podAnnotations:
     linkerd.io/inject: enabled
+    config.linkerd.io/skip-inbound-ports: "9187"
 #  serviceAnnotations:
 #    annotation.key: value
 #  podPriorityClassName: "spilo-pod-priority"
