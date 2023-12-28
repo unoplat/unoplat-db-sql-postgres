@@ -8,9 +8,10 @@
 - Observability (Logging, Monitoring, Alerting)
 - Chaos Testing
 - Storage Backup and Recovery
-- Authorised Control
+- IAM based access controls
 - Disaster Recovery
 - Full Local Developer Experience
+- Cloud Native Cost Insights
 - DevSecOps:
   - Helm Chart Vulnerability Analysis
   - Container Vulnerability Analysis and Automatic Fix.
