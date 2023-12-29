@@ -1,0 +1,14 @@
+groups:
+- name: postgres_alerts
+  rules:
+  - alert: PostgresErrorRateHigh
+    expr: |
+      sum(rate({cluster-name="unoplat-postgres-cluster", app="postgres"} |= "error" [5m])) by (job)
+      /
+      sum(rate({cluster-name="unoplat-postgres-cluster", app="postgres"} [5m])) by (job)
+      > 0.05
+    for: 10m
+    labels:
+      severity: critical
+    annotations:
+      summary: High error rate in Postgres
