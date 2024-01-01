@@ -1,0 +1,36 @@
+apiVersion: k6.io/v1alpha1
+kind: K6
+metadata:
+  name: k6-jdbc-test
+spec:
+  parallelism: 1  # Number of k6 pods to run in parallel
+  script:
+    configMap:
+      name: postgres-perf-test  # Name of the ConfigMap containing your script
+      file: performance-script.js  # Key for the file in the ConfigMap
+  #arguments: --vus 10 --duration 30s
+  runner:
+    image: ghiya6548/k6-sql:latest
+    metadata:
+      annotations:
+        linkerd.io/inject: "enabled"  # Ensures Linkerd proxy injection
+        config.linkerd.io/shutdown-grace-period: "1"  # Grace period for proxy shutdown
+        config.alpha.linkerd.io/proxy-wait-before-exit-seconds: "1"  # Wait time before
+        config.linkerd.io/proxy-await: "enabled"
+    env:
+      - name: DB_USER
+        valueFrom:
+          secretKeyRef:
+            name: harbor-user.unoplat-postgres-cluster.credentials.postgresql.acid.zalan.do  # Name of the ConfigMap containing environment variables
+            key: username  # Key for the database host variable in the ConfigMap
+      - name: DB_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            key: password
+            name: harbor-user.unoplat-postgres-cluster.credentials.postgresql.acid.zalan.do
+      - name: DB_HOST
+        value: "unoplat-postgres-cluster.unoplat-db-sql"
+      - name: DB_NAME
+        value: "unoplat-registry"
+
+    # Repeat for other variables like DB_USER, DB_PASSWORD, etc.
